@@ -20,7 +20,7 @@ public class Runner {
 		int totalUrls = sc.nextInt();
 		
 		System.out.println("Enter your urls....");
-		//https://www.github.com
+		//https://www.github.com 
 		
 
 		String urlContainer[] = new String[totalUrls];
