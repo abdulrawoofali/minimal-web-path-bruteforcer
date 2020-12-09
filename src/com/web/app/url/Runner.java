@@ -19,7 +19,7 @@ public class Runner {
 		
 		int totalUrls = sc.nextInt();
 		
-		System.out.println("Eneter your urls....");
+		System.out.println("Enter your urls....");
 		//https://www.github.com
 		
 
@@ -53,7 +53,7 @@ public class Runner {
 			
 			for (int j = 0; j < pathListSize; j += chunckSize) {
 				int endIndex = pathListSize - (chunckSize + j) > 0 ? (chunckSize + j) : pathListSize;
-				ThreadWorker worker = new ThreadWorker(outPutUrlStatus, pathsList,url, j, endIndex);
+				WorkerThread worker = new WorkerThread(outPutUrlStatus, pathsList,url, j, endIndex);
 				executor.execute(worker);
 
 			}
@@ -61,6 +61,7 @@ public class Runner {
 
 		executor.shutdown();
 		while (!executor.isTerminated()) {
+			System.out.println("Loading.....");
 		}
 		
 		System.out.println("Finished all threads");

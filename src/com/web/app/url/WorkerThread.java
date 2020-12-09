@@ -1,13 +1,13 @@
 package com.web.app.url;
 import java.util.*;
 
-public class ThreadWorker implements Runnable {
+public class WorkerThread implements Runnable {
 	List<String> result;
 	List pathsList;
 	int startIndex;
 	int endIndex;
 	String url;
-	ThreadWorker(List result,List pathsList,String url,int startIndex,int endIndex){
+	WorkerThread(List result,List pathsList,String url,int startIndex,int endIndex){
 		this.result = result;
 		this.pathsList = pathsList;
 		this.startIndex = startIndex;

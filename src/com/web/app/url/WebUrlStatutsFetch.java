@@ -6,7 +6,7 @@ import java.net.HttpURLConnection;
 public class WebUrlStatutsFetch {
 	
 	public static String getStatus(String url) throws IOException {
-		System.out.println("Loading.....");
+		//System.out.println("Loading.....");
 		String result = "";
 		int code = 200;
 		try {
