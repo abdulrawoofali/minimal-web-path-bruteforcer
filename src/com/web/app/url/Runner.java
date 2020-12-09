@@ -47,10 +47,12 @@ public class Runner {
 
 		List pathsList = readFileInList(pathListFile);
 
-		List<String> outPutUrlStatus = Collections.synchronizedList(new ArrayList<String>());
+		List<String> outputContainer = Collections.synchronizedList(new ArrayList<String>());
 
 		int pathListSize = pathsList.size();
-		ExecutorService executor = Executors.newFixedThreadPool(4);
+
+		//Preparing  thread pool...
+		ExecutorService executor = Executors.newFixedThreadPool(8);
 
 		System.out.println("Total Paths from file ->  " + pathListSize);
 		System.out.println("Running brute force......on all paths.....");
@@ -58,26 +60,33 @@ public class Runner {
 		for (String url : urlContainer) {
 
 			for (int j = 0; j < pathListSize; j++) {
-				WorkerThread worker = new WorkerThread(outPutUrlStatus, (String) pathsList.get(j), url, statusCodes);
+				WorkerThread worker = new WorkerThread(outputContainer, (String) pathsList.get(j), url, statusCodes);
 				executor.execute(worker);
 
 			}
 		}
 
 		executor.shutdown();
+		int prevCount =0;
 		while (!executor.isTerminated()) {
-			System.out.println("Loading.....");
+			if(prevCount < outputContainer.size()){
+				prevCount = outputContainer.size();
+
+			}
+			System.out.println("getting status.....!");
+			System.out.println("Urls matching with status Code"+statusCodes+"  = "+prevCount);
 		}
 
 		System.out.println("Finished all threads");
 
-		System.out.println("Total Urls With Status" + statusCodes + "-> " + outPutUrlStatus.size() + "\n\n");
+		System.out.println("Total Urls With Status" + statusCodes + "-> " + outputContainer.size() + "\n\n");
 
-		for (String urlStatuts : outPutUrlStatus) {
+		for (String urlAndStatus : outputContainer) {
 
-			System.out.println(urlStatuts);
+			System.out.println(urlAndStatus);
 
 		}
+		return;
 
 	}
 

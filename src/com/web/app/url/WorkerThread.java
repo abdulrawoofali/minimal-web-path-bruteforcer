@@ -20,10 +20,9 @@ public class WorkerThread implements Runnable {
 	public void run() {
 
 		try {
-			String currentResult = WebUrlStatutsFetch.getStatus(url + "/" + path, statusCodes);
+			String currentResult = WebUrlFetcher.getStatus(url + "/" + path, statusCodes);
 			if (currentResult.length() > 0) {
 				result.add(currentResult);
-				// System.out.println(result);
 			}
 
 		} catch (Exception e) {
