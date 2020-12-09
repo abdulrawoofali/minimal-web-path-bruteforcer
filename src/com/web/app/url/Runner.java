@@ -12,6 +12,7 @@ public class Runner {
 	public static void main(String[] args) {
 
 		int chunckSize = 40;
+		Set<Integer> statusCodes= new HashSet<>();
 		
 		Scanner sc = new Scanner(System.in);
 		
@@ -19,8 +20,8 @@ public class Runner {
 		
 		int totalUrls = sc.nextInt();
 		
-		System.out.println("Enter your urls....");
-		//https://www.github.com 
+		System.out.println("Enter your webUrls....");
+		//https://www.github.com
 		
 
 		String urlContainer[] = new String[totalUrls];
@@ -36,6 +37,16 @@ public class Runner {
 
 		String pathListFile = sc.next();
 
+		System.out.println("number of status code's to tack...");
+		int numberOfStatutsCodesToMonitor = sc.nextInt();
+
+		i=0;
+		while(i<numberOfStatutsCodesToMonitor){
+			statusCodes.add(sc.nextInt());
+			i++;
+		}
+		
+
 		List pathsList = readFileInList(pathListFile);
 		
 		
@@ -44,7 +55,7 @@ public class Runner {
 
 		ExecutorService executor = Executors.newFixedThreadPool(9);
 
-		int pathListSize = pathsList.size();
+		int pathListSize = 100;//pathsList.size();
 
 		System.out.println("Total Paths from file ->  " +pathListSize);
 		System.out.println("Running brute force......on all paths.....");
@@ -53,11 +64,13 @@ public class Runner {
 			
 			for (int j = 0; j < pathListSize; j += chunckSize) {
 				int endIndex = pathListSize - (chunckSize + j) > 0 ? (chunckSize + j) : pathListSize;
-				WorkerThread worker = new WorkerThread(outPutUrlStatus, pathsList,url, j, endIndex);
+				WorkerThread worker = new WorkerThread(outPutUrlStatus, pathsList,url, j, endIndex,statusCodes);
 				executor.execute(worker);
 
 			}
 		}
+
+
 
 		executor.shutdown();
 		while (!executor.isTerminated()) {
@@ -67,7 +80,7 @@ public class Runner {
 		System.out.println("Finished all threads");
 		
 		
-		System.out.println("Total Url Withs Status [302,200] -> "+ outPutUrlStatus.size()+"\n\n");
+		System.out.println("Total Url Withs Status"+statusCodes+ "-> "+ outPutUrlStatus.size()+"\n\n");
 
 		for (String urlStatuts : outPutUrlStatus) {
 
